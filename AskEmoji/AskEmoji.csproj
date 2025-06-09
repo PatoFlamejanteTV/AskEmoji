@@ -90,6 +90,9 @@
     <Content Include="Res\custom_rules\good.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Res\examples\custom_rules_testing\nice_app.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Res\img\bad.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
