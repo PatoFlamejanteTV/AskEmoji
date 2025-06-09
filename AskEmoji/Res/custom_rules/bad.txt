@@ -1,0 +1,6 @@
+﻿trash
+real_bad
+virus
+malware
+trojan
+really_bad

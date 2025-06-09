@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AskEmoji.Forms;
+using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using AskEmoji.Forms;
 
 namespace AskEmoji
 {
@@ -37,22 +37,79 @@ namespace AskEmoji
                 }
                 return;
             }
-
             string filePath = args[0];
             string fileName = Path.GetFileName(filePath).ToLowerInvariant();
 
-            if (fileName.Contains("good")) //if (fileName.Contains("good_app"))
+            string goodRules = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "Res",
+                "custom_rules",
+                "good.txt"
+            );
+
+            string badRules = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "Res",
+                "custom_rules",
+                "bad.txt"
+            );
+
+            bool matchesGood = false;
+            bool matchesBad = false;
+
+            // Verifica regras good.txt
+            if (File.Exists(goodRules))
+            {
+                foreach (var line in File.ReadAllLines(goodRules))
+                {
+                    var rule = line.Trim().ToLowerInvariant();
+                    if (!string.IsNullOrEmpty(rule) && fileName.Contains(rule))
+                    {
+                        matchesGood = true;
+                        break;
+                    }
+                }
+            }
+
+            // Verifica regras bad.txt
+            if (!matchesGood && File.Exists(badRules))
+            {
+                foreach (var line in File.ReadAllLines(badRules))
+                {
+                    var rule = line.Trim().ToLowerInvariant();
+                    if (!string.IsNullOrEmpty(rule) && fileName.Contains(rule))
+                    {
+                        matchesBad = true;
+                        break;
+                    }
+                }
+            }
+
+            if (matchesGood)
             {
                 Application.Run(new Good());
             }
-            else if (fileName.Contains("bad")) //else if (fileName.Contains("bad_app"))
+            else if (matchesBad)
             {
                 Application.Run(new Bad());
             }
             else
             {
-                MessageBox.Show("i dont actually have an opinion on this", "Ask Emoji", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (fileName.Contains("good")) //if (fileName.Contains("good_app"))
+                {
+                    Application.Run(new Good());
+                }
+                else if (fileName.Contains("bad")) //else if (fileName.Contains("bad_app"))
+                {
+                    Application.Run(new Bad());
+                }
+                else
+                {
+                    MessageBox.Show("i dont actually have an opinion on this", "Ask Emoji", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
+
+
         }
 
         private static bool IsContextMenuInstalled()
