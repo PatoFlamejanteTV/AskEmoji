@@ -20,8 +20,8 @@ jobs:
        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
        iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
        
-    - name: Install .NET Framework 4.0 Developer Pack
-      run: choco install netfx-4.0-devpack -y
+    - name: Install .NET Framework 4.5 Developer Pack
+      run: choco install netfx-4.5-devpack -y
     - uses: microsoft/setup-msbuild@v2
     - name: Build with MSBuild
       run: msbuild AskEmoji.sln /p:Configuration=Release
